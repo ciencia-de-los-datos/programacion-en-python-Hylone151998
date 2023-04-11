@@ -12,6 +12,10 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 """
 
+archivo=open("data.csv","r").readlines()
+archivo = [z.replace('\n', '') for z in archivo]
+archivo = [line.split('\t') for line in archivo]
+
 
 def pregunta_01():
     """
@@ -21,7 +25,12 @@ def pregunta_01():
     214
 
     """
-    return
+    suma=0
+    archivo=open("data.csv","r").readlines()
+    for lines in archivo:
+        lines=lines.split('\t')
+        suma= suma + int(lines[1])
+    return suma
 
 
 def pregunta_02():
@@ -39,7 +48,26 @@ def pregunta_02():
     ]
 
     """
-    return
+    import re
+    archivo=open("data.csv","r")
+    archivoCompleto=archivo.readlines()
+    diccionario={}
+    matriz=[]
+
+    for linea in archivoCompleto:
+        matriz.append(re.split(",|\t",linea))
+
+
+
+    for linea in matriz:
+        value=linea[0]
+        if value in diccionario:
+            diccionario[value]+=1
+        else:
+            diccionario[value]=1
+    diccionario_ordenado=sorted(diccionario.items())
+    diccionario_ordenado
+    return diccionario_ordenado
 
 
 def pregunta_03():
@@ -57,7 +85,27 @@ def pregunta_03():
     ]
 
     """
-    return
+    import re
+    archivo=open("data.csv","r")
+    archivoCompleto=archivo.readlines()
+    diccionario={}
+    matriz=[]
+
+    for linea in archivoCompleto:
+        matriz.append(re.split(",|\t",linea))
+
+    for linea in matriz:
+        key=linea[0]
+        value=int(linea[1])
+        if key in diccionario:
+            diccionario[key]+=value
+        else:
+            diccionario[key]=value
+    diccionario_ordenado=sorted(diccionario.items())
+    diccionario_ordenado
+
+    
+    return diccionario_ordenado
 
 
 def pregunta_04():
@@ -82,7 +130,26 @@ def pregunta_04():
     ]
 
     """
-    return
+    import re
+    archivo=open("data.csv","r")
+    archivoCompleto=archivo.readlines()
+    diccionario={}
+    matriz=[]
+
+    for linea in archivoCompleto:
+        matriz.append(re.split(",|\t",linea))
+
+    for linea in matriz:
+        key=linea[2].split("-")[1]
+  
+
+        if key in diccionario:
+            diccionario[key]+=1
+        else:
+            diccionario[key]=1
+    diccionario_ordenado=sorted(diccionario.items())
+    diccionario_ordenado
+    return diccionario_ordenado
 
 
 def pregunta_05():
@@ -100,7 +167,28 @@ def pregunta_05():
     ]
 
     """
-    return
+    data=open("data.csv","r").readlines()
+    dictionary= {}  
+    for line in data:
+        line=line.split('\t')
+        letters=line[0]
+        nums= line[1]
+        for letter, num in zip(letters, nums):
+            if letter in dictionary:
+                if int(num) > int(dictionary[letter][0]):
+                    dictionary[letter]=(int(num),dictionary[letter][1])
+                elif int(num) < int(dictionary[letter][1]):  
+                    dictionary[letter]=(dictionary[letter][0],int(num))
+            else:
+                dictionary[letter]=(int(num),int(num))
+    lista=[(letter,dictionary[letter][0], dictionary[letter][1])for letter in dictionary]
+
+    resultado=sorted(lista)
+
+
+
+
+    return resultado
 
 
 def pregunta_06():
@@ -125,7 +213,39 @@ def pregunta_06():
     ]
 
     """
-    return
+    import re
+    archivo = open("data.csv","r")
+    archivoCompleto = archivo.readlines()
+    diccionario = {}
+    matriz = []
+
+    for linea in archivoCompleto:
+        matriz.append(linea.split("\t"))
+
+    for linea in matriz:
+        data = linea[4].split(",")
+        for element in data:
+            key, value = element.split(":")
+            value = int(value)  
+            if key not in diccionario:
+                diccionario[key] = (value, value)
+            else:
+                current_min, current_max = diccionario[key]
+                diccionario[key] = (min(current_min, value), max(current_max, value))
+
+    diccionario_ordenado = sorted(diccionario.items())
+    dic_final = []
+    for val in diccionario_ordenado:
+        dic_final.append([val[0], val[1][0], val[1][1]])
+
+
+
+    dic_final = []
+    for val in diccionario_ordenado:
+        dic_final.append([val[0], val[1][0], val[1][1]])
+
+    dic_final = list(map(tuple, dic_final))
+    return dic_final
 
 
 def pregunta_07():
@@ -149,8 +269,37 @@ def pregunta_07():
     ]
 
     """
-    return
+    # import re
+    # archivo=open("data.csv","r")
+    # archivoCompleto=archivo.readlines()
+    # diccionario={}
+    # matriz=[]
 
+    # for linea in archivoCompleto:
+    #     matriz.append(linea.split("\t"))
+
+    # for linea in matriz:
+    #     clave=int(linea[1])
+    #     valor=linea[0]  
+    # if clave not in diccionario:
+    #     diccionario[clave]=[valor]
+    
+    # else:
+    #     diccionario[clave].append(valor)
+    # diccionario_ordenado=sorted(diccionario.items())
+    # print("hola")
+    # print(diccionario_ordenado)
+    valores = {}
+    for row in archivo:
+        letra = row[0]
+        valor = float(row[1])
+        if valor in valores:
+            valores[valor].append(letra)
+        else:
+            valores[valor] = [letra]
+ 
+    return sorted(valores.items())
+  
 
 def pregunta_08():
     """
@@ -174,8 +323,18 @@ def pregunta_08():
     ]
 
     """
-    return
-
+    
+    valores = {}
+    for row in archivo:
+        letra = row[0]
+        valor = float(row[1])
+        if valor in valores:
+            valores[valor].append(letra)
+        else:
+            valores[valor] = [letra]
+    tuplas = [(valor, sorted(list(set(valores[valor])))) for valor in valores.keys()]
+    tup=sorted(tuplas)
+    return tup
 
 def pregunta_09():
     """
@@ -197,7 +356,43 @@ def pregunta_09():
     }
 
     """
-    return
+    # import re
+    # archivo=open("data.csv","r")
+    # archivoCompleto=archivo.readlines()
+    # diccionario={}
+    # matriz=[]
+
+    # for linea in archivoCompleto:
+    #     matriz.append(linea.split("\t"))
+
+
+
+    # for linea in matriz:
+    #     data=linea[4].split(",")
+
+    # for element in data:
+    #     key,value=element.split(":")
+    #     value=int(value)  
+    #     if key not in diccionario:
+    #         diccionario[key]=1
+    #     else:
+    #         diccionario[key]+=1
+    # diccionario_ordenado=sorted(diccionario.items())
+
+    # diccionario_ordenado=dict(diccionario_ordenado)
+    # diccionario_ordenado
+
+    valores = {}
+    for row in archivo:
+        diccionario = dict(item.split(':') for item in row[4].split(','))
+        for clave in diccionario.keys():
+            if clave in valores:
+                valores[clave] += 1
+            else:
+                valores[clave] = 1
+    result= dict(sorted(valores.items()))
+    return result
+    
 
 
 def pregunta_10():
@@ -218,7 +413,22 @@ def pregunta_10():
 
 
     """
-    return
+    import re
+    archivo=open("data.csv","r")
+    archivoCompleto=archivo.readlines()
+    lista=[]
+    matriz=[]
+
+    for linea in archivoCompleto:
+        matriz.append(linea.split("\t"))
+
+
+    for linea in matriz:
+        key=linea[0]
+        LongCol4=len(linea[3].split(","))
+        LongCol5=len(linea[4].split(","))
+        lista.append((key,LongCol4,LongCol5))
+    return lista
 
 
 def pregunta_11():
@@ -236,11 +446,34 @@ def pregunta_11():
         "f": 134,
         "g": 35,
     }
-
+    
 
     """
-    return
+    
+   
+    data=open("data.csv","r").readlines()
+    dictionary={}
+    new_dictionary={}
+    for line in data:
+      line=line.strip().split('\t')
+      letter=line[3].split(",")
+      num=int(line[1])
+      dictionary={element: num for element in letter}
+      for element, value in dictionary.items():
+        if element in new_dictionary:
+          new_dictionary[element]+=value
+        else:
+          new_dictionary[element]=value
+    ordered_dict_items = sorted(new_dictionary.items())
+    ordered_dict = {}
+    for item in ordered_dict_items:
+      ordered_dict[item[0]] = item[1]
+    ordered_dict = dict(ordered_dict)
 
+    
+
+
+    return (ordered_dict)
 
 def pregunta_12():
     """
@@ -257,4 +490,27 @@ def pregunta_12():
     }
 
     """
-    return
+    data=open("data.csv","r").readlines()
+    dictionary={}
+    new_dictionary={}
+    for line in data:
+      line=line.strip().split('\t')
+      key=line[0]
+      tuplas=line[4].split(",")
+      num_list=[]
+      for element in tuplas:
+        num_list.append(int(element.split(":")[1]))
+      if key in new_dictionary:
+          dictionary[key].extend(num_list)
+      else:
+          dictionary[key]= num_list
+      for key, num_list in dictionary.items():
+        new_dictionary[key] = sum(num_list)
+    ordered_dict_items = sorted(new_dictionary.items())
+    ordered_dict = {}
+    for item in ordered_dict_items:
+      ordered_dict[item[0]] = item[1]
+    ordered_dict = dict(ordered_dict)
+    
+    return (ordered_dict)
+    
